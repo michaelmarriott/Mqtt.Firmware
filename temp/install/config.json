@@ -1,0 +1,8 @@
+{
+  "div_second": 300,
+  "mqtt_url":"cool-model.cloudmqtt.com",
+  "mqtt_username":"Sensor1",
+  "mqtt_pwd":"Sensor1",
+  "teleperiod_offset":300,
+  "teleperiod":300
+}

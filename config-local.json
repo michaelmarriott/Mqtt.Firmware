@@ -1,0 +1,7 @@
+{"url": "http://localhost:3001/firmware/100", 
+  "version": 0, 
+  "firmwarepath": "D:\\temp\\",
+ "savepath":"D:\\temp\\install.zip",
+  "unzippath":"D:\\temp\\",
+  "setup":"D:\\temp\\install\\setup.py"
+}

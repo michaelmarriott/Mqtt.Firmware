@@ -1,0 +1,15 @@
+[Unit]
+Description=Firmware service
+After=network.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/firmware/firmware.py
+WorkingDirectory=/home/pi/firmware
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
