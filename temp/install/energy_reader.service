@@ -1,0 +1,15 @@
+[Unit]
+Description=Energy Reader service
+After=network.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/sensor/energy_reader.py
+WorkingDirectory=/home/pi/sensor
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
