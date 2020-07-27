@@ -22,36 +22,38 @@ current_holder = 0
 config = lambda: None
 url = ''
 version = 0
-wait = 20
+wait = 600
 
-def download_url(url, save_path, chunk_size=128):
+def download_url(url, save_path, chunk_size=1024):
   print("download_url")
-  r = requests.get(url, stream=True)
-  print(r)
-  print(r.headers['content-type'])
-  print(r.encoding)
-  print('save file')
-  print(save_path)
-  with open(save_path, 'wb') as fd:
-    print("save_path")
-    for chunk in r.iter_content(chunk_size=chunk_size):
-      fd.write(chunk)     
+  try:
+    dr = requests.get(url)
+    print("..............")
+    print(dr)
+    print(dr.headers['content-type'])
+    print(dr.encoding)
+    print('save file')
+    print(save_path)
+    with open(save_path, 'wb') as fd:
+      print("save_path")
+      for chunk in r.iter_content(chunk_size=chunk_size):
+        fd.write(chunk)     
+  except:
+    print("error loading firmware config",sys.exc_info()[0])
 
 def latest_version(url,current_version):
-  print(url)
-  print("latest_version")
-  url_verision = url+"?version="+str(current_version)
-  print(url_verision)
-  r = requests.get(url_verision)
+  url_version = url+"?version="+str(current_version)
+  r = requests.get(url_version)
   json = r.json()
   if current_version != json["version"]:
     return json["version"]
-
   return None
+
 
 def update_json():
   with open('config.json', 'w') as outfile:
     json.dump(config, outfile, indent=4)
+
 
 try:
   with open("config.json", "r") as jsonFile:
@@ -68,24 +70,37 @@ try:
   time.sleep(2)
   while 1:
     try:
-      version = latest_version(url,version)
-      print("version")
-      print(version)
-      if version != None:
-        config['version'] = version
-        download_url(url+'/'+str(version),config['savepath'])
-        shutil.rmtree(config['unzippath']+'/install')
+      new_version = latest_version(url,version)
+      print("new_version")
+      print(new_version)
+      if new_version != None and new_version != "None":
+        logger.error('downloading') 
+        config['version'] = new_version
+        download_url(url+'/'+str(new_version),config['savepath'])
+        print('downloaded')
+        
+        try:
+          shutil.rmtree(config['unzippath']+'/install')
+        except:
+          print("Error occurred::: ",sys.exc_info()) 
+
         with zipfile.ZipFile(config['savepath'], 'r') as zip_ref:
           zip_ref.extractall(config['unzippath'])
-          (config['setup'])
-        
+
+        print(config['setup'])
+
+        stream = os.popen('python '+ config['setup'])
+        output = stream.read()
+        output
+
         print('update_json')
         update_json()
         
       time.sleep(wait)
     except:
       print("Error occurred::: ",sys.exc_info()) 
-      logger.error(sys.exc_info()[0])
+      logger.error(sys.exc_info()[0]) 
+      logger.error(sys.exc_info()[-1])
       time.sleep(2)       
         
 except (IndexError):
