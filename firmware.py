@@ -9,6 +9,7 @@ from logging.handlers import RotatingFileHandler
 import json
 import zipfile
 import shutil 
+from jsonmerge import merge
 
 logger = logging.getLogger('firmware_logger')
 logger.setLevel(logging.DEBUG)
@@ -49,7 +50,6 @@ def latest_version(url,current_version):
     return json["version"]
   return None
 
-
 def update_json():
   with open('config.json', 'w') as outfile:
     json.dump(config, outfile, indent=4)
@@ -58,10 +58,23 @@ def update_json():
 try:
   with open("config.json", "r") as jsonFile:
     config = json.load(jsonFile)
-    url = config['url']
-    version = config['version']
 except:
   print("error loading config",sys.exc_info()[0])
+  logger.error(sys.exc_info()[0])
+
+try:
+  with open("../appsettings.json", "r") as jsonFile:
+    appsettings = json.load(jsonFile)
+    config = merge(config, appsettings)
+except:
+  print("error loading config",sys.exc_info()[0])
+  logger.error(sys.exc_info()[0])
+
+try:
+  url = config['url']
+  version = config['version']
+except:
+  print("error config",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try:
