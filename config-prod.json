@@ -1,8 +1,0 @@
-{
-  "url": "https://mqttapi.coderworx.co.za/firmware/1", 
-  "version": 0, 
-  "firmwarepath": "/home/pi/firmware/",
-  "savepath":"/home/pi/firmware/temp/install.zip",
-  "unzippath":"/home/pi/firmware/temp/",
-  "setup":"/home/pi/firmware/temp/install/setup.py"
-}

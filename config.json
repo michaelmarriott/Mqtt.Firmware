@@ -1,8 +1,0 @@
-{
-    "url": "https://mqttapi.coderworx.co.za/firmware/Sensor2", 
-    "firmwarepath": "/home/pi/firmware/",  
-    "unzippath": "/home/pi/firmware/temp/",  
-    "setup": "/home/pi/firmware/temp/install/setup.py", 
-    "version": 0, 
-    "savepath": "/home/pi/firmware/temp/install.zip"
-}
