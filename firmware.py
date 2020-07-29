@@ -9,6 +9,7 @@ from logging.handlers import RotatingFileHandler
 import json
 import zipfile
 import shutil 
+from jsonmerge import merge
 
 logger = logging.getLogger('firmware_logger')
 logger.setLevel(logging.DEBUG)
@@ -21,13 +22,15 @@ div_second = 300
 current_holder = 0
 config = lambda: None
 url = ''
+auth_url= ''
+token= ''
 version = 0
 wait = 600
 
-def download_url(url, save_path, chunk_size=1024):
+def download_url(url, save_path,token, chunk_size=1024):
   print("download_url")
   try:
-    dr = requests.get(url)
+    dr = requests.get(url, headers={'Authorization': 'Bearer {token}'})
     print("..............")
     print(dr)
     print(dr.headers['content-type'])
@@ -41,13 +44,21 @@ def download_url(url, save_path, chunk_size=1024):
   except:
     print("error loading firmware config",sys.exc_info()[0])
 
-def latest_version(url,current_version):
+def get_latest_version(url,current_version,token):
   url_version = url+"?version="+str(current_version)
-  r = requests.get(url_version)
+  r = requests.get(url_version, headers={'Authorization': 'Bearer {token}')
   json = r.json()
   if current_version != json["version"]:
     return json["version"]
   return None
+
+def get_token(auth_url):
+  try:
+    r = requests.get(auth_url)
+    json = r.json()
+    return json
+  except:
+    print("error loading firmware config",sys.exc_info()[0])
 
 
 def update_json():
@@ -58,10 +69,23 @@ def update_json():
 try:
   with open("config.json", "r") as jsonFile:
     config = json.load(jsonFile)
-    url = config['url']
-    version = config['version']
 except:
   print("error loading config",sys.exc_info()[0])
+  logger.error(sys.exc_info()[0])
+
+try:
+  with open("../appsettings.json", "r") as jsonFile:
+    appsettings = json.load(jsonFile)
+    config = merge(config, appsettings)
+except:
+  print("error loading config",sys.exc_info()[0])
+  logger.error(sys.exc_info()[0])
+
+try:
+  url = config['url']
+  version = config['version']
+except:
+  print("error config",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try:
@@ -70,7 +94,8 @@ try:
   time.sleep(2)
   while 1:
     try:
-      new_version = latest_version(url,version)
+      token = get_token(auth_url)
+      new_version = get_latest_version(url,version,token)
       print("new_version")
       print(new_version)
       if new_version != None and new_version != "None":
