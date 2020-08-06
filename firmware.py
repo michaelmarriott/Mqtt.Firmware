@@ -30,11 +30,14 @@ client_id=''
 version = 0
 wait = 600
 
-def download(url, save_path, token, chunk_size=1024):
-  print("download")
+def download(url,username,version, save_path, token, chunk_size=1024):
+  print("download...")
   try:
+    url_version = url+"/firmware/"+username+"/"+str(version)
     url_token = 'Bearer '+token+''
-    dr = requests.get(url, headers={'Authorization': url_token})
+    print(url_version)
+    dr = requests.get(url_version, headers={'Authorization': url_token})
+    print(download)
     if dr.status_code >= 400:
       return False
     print("..............")
@@ -124,7 +127,7 @@ try:
       if new_version != None and new_version != "None":
         logger.error('downloading') 
         config['version'] = new_version
-        success = download(url+'/'+str(new_version),config['savepath'],token)
+        success = download(url,username,str(new_version),config['savepath'],token)
         if success == True:
           print('downloaded')        
           try:

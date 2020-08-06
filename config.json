@@ -2,7 +2,8 @@
     "url": "http://localhost:3004", 
     "auth_url":"https://auth.coderworx.co.za",
     "version": 0, 
-    "firmwarepath": "D:\\temp\\",
+    "firmwarepath": "D:\\temp\\firmware\\",
+    "sensorpath": "D:\\temp\\sensor\\", 
    "savepath":"D:\\temp\\install.zip",
     "unzippath":"D:\\temp\\",
     "setup":"D:\\temp\\install\\setup.py"
