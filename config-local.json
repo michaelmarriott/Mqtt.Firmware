@@ -1,4 +1,6 @@
-{"url": "http://localhost:3001/firmware/100", 
+{
+  "url": "http://localhost:3001/firmware/100", 
+  "auth_url":"https://auth.coderworx.co.za",
   "version": 0, 
   "firmwarepath": "D:\\temp\\",
  "savepath":"D:\\temp\\install.zip",

@@ -24,13 +24,19 @@ config = lambda: None
 url = ''
 auth_url= ''
 token= ''
+username=''
+pwd=''
+client_id=''
 version = 0
 wait = 600
 
-def download_url(url, save_path,token, chunk_size=1024):
-  print("download_url")
+def download(url, save_path, token, chunk_size=1024):
+  print("download")
   try:
-    dr = requests.get(url, headers={'Authorization': 'Bearer {token}'})
+    url_token = 'Bearer '+token+''
+    dr = requests.get(url, headers={'Authorization': url_token})
+    if dr.status_code >= 400:
+      return False
     print("..............")
     print(dr)
     print(dr.headers['content-type'])
@@ -42,24 +48,33 @@ def download_url(url, save_path,token, chunk_size=1024):
       for chunk in r.iter_content(chunk_size=chunk_size):
         fd.write(chunk)     
   except:
-    print("error loading firmware config",sys.exc_info()[0])
+    print("error loading firmware config:download_url:",sys.exc_info()[0])
+    return False
+  return True
 
-def get_latest_version(url,current_version,token):
-  url_version = url+"?version="+str(current_version)
-  r = requests.get(url_version, headers={'Authorization': 'Bearer {token}')
+def get_latest_version(url,username, current_version,token):
+  url_version = url+"/firmware/"+username+"?version="+str(current_version)
+  print(url_version)
+  
+  url_token = 'Bearer '+token+''
+  print(url_token)
+  r = requests.get(url_version, headers={'Authorization': url_token })
+
+  print(r.text)
   json = r.json()
   if current_version != json["version"]:
     return json["version"]
   return None
 
-def get_token(auth_url):
+def get_token(auth_url, username, password,client_id):
   try:
-    r = requests.get(auth_url)
-    json = r.json()
-    return json
+    body = {'username':username,'password':password, 'client_id': client_id}
+    r = requests.post(auth_url+"/device/token", json=body) 
+    text = r.text
+    return text
   except:
-    print("error loading firmware config",sys.exc_info()[0])
-
+    print("Error occurred::: ",sys.exc_info()) 
+    print("error get_token:",sys.exc_info()[0])
 
 def update_json():
   with open('config.json', 'w') as outfile:
@@ -78,55 +93,63 @@ try:
     appsettings = json.load(jsonFile)
     config = merge(config, appsettings)
 except:
+  print("Error occurred: ",sys.exc_info()) 
   print("error loading config",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try:
   url = config['url']
+  auth_url = config['auth_url']
   version = config['version']
+  client_id = config['client_id']
+  username = config['username']
+  pwd = config['pwd']
 except:
+  print("Error occurred: ",sys.exc_info()) 
   print("error config",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try:
   print("Firmware Setup")
   print(url)
+  print(auth_url)
+  print(username)
   time.sleep(2)
   while 1:
     try:
-      token = get_token(auth_url)
-      new_version = get_latest_version(url,version,token)
+      token = get_token(auth_url, username, pwd, client_id)
+      new_version = get_latest_version(url, username, version, token)
       print("new_version")
       print(new_version)
       if new_version != None and new_version != "None":
         logger.error('downloading') 
         config['version'] = new_version
-        download_url(url+'/'+str(new_version),config['savepath'])
-        print('downloaded')
-        
-        try:
-          shutil.rmtree(config['unzippath']+'/install')
-        except:
-          print("Error occurred::: ",sys.exc_info()) 
+        success = download(url+'/'+str(new_version),config['savepath'],token)
+        if success == True:
+          print('downloaded')        
+          try:
+            shutil.rmtree(config['unzippath']+'/install')
+          except:
+            print("Error occurred shutil.rmtree ::: ",sys.exc_info()) 
 
-        with zipfile.ZipFile(config['savepath'], 'r') as zip_ref:
-          zip_ref.extractall(config['unzippath'])
+          with zipfile.ZipFile(config['savepath'], 'r') as zip_ref:
+            zip_ref.extractall(config['unzippath'])
 
-        print(config['setup'])
+          print(config['setup'])
 
-        stream = os.popen('python '+ config['setup'])
-        output = stream.read()
-        output
+          stream = os.popen('python '+ config['setup'])
+          output = stream.read()
+          output
 
-        print('update_json')
-        update_json()
+          print('update_json')
+          update_json()
         
       time.sleep(wait)
     except:
-      print("Error occurred::: ",sys.exc_info()) 
+      print("Error occurred in loop::: ",sys.exc_info()) 
       logger.error(sys.exc_info()[0]) 
       logger.error(sys.exc_info()[-1])
-      time.sleep(2)       
+      time.sleep(wait)       
         
 except (IndexError):
   print("No data received within serial timeout period")

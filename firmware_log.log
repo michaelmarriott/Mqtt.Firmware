@@ -1,60 +1,35 @@
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
+<type 'exceptions.IOError'>
+<traceback object at 0x0000000004788AC8>
+downloading
+<type 'exceptions.IOError'>
+<traceback object at 0x0000000004297E08>
+downloading
+<type 'exceptions.IOError'>
+<traceback object at 0x0000000004788AC8>
+downloading
+<type 'exceptions.IOError'>
+<traceback object at 0x0000000004297E08>
+downloading
+<type 'exceptions.IOError'>
+<traceback object at 0x0000000003B31C48>
+<class 'requests.exceptions.ConnectionError'>
+<traceback object at 0x0000000004698C48>
+<type 'exceptions.TypeError'>
+<traceback object at 0x0000000004698F48>
+downloading
 <class 'zipfile.BadZipfile'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.ValueError'>
-<type 'exceptions.IOError'>
-<type 'exceptions.IOError'>
-<type 'exceptions.IOError'>
-<type 'exceptions.IOError'>
+<traceback object at 0x00000000042B1788>
 <type 'exceptions.KeyboardInterrupt'>
-<type 'exceptions.IOError'>
+<traceback object at 0x00000000042B1848>
+downloading
+<class 'zipfile.BadZipfile'>
+<traceback object at 0x0000000004169888>
+downloading
+<class 'zipfile.BadZipfile'>
+<traceback object at 0x0000000004172F08>
+downloading
+<class 'zipfile.BadZipfile'>
+<traceback object at 0x00000000048318C8>
+downloading
+<type 'exceptions.KeyboardInterrupt'>
+<traceback object at 0x00000000047242C8>
