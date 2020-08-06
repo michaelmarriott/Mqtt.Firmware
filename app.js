@@ -18,12 +18,10 @@ const authenticateJWT = (req, res, next) => {
 
   if (authHeader) {
       const token = authHeader.split(' ')[1];
-
       jwt.verify(token, app_config.tokenKey, (err, data) => {
           if (err) {
               return res.sendStatus(403);
           }
-
           req.token = data;
           next();
       });
@@ -50,11 +48,12 @@ app.get('/firmware/:deviceid/:version', authenticateJWT, async (req, res) => {
   console.log(req.params.deviceid);
   console.log(req.params.version);
   console.log(req.token);
- // if(req.params.version == 2 && req.params.deviceid == "Server1"){
-  //    const file = `${__dirname}\\firmware\\install.zip`;
-  //    console.log(file);
-    //  res.sendFile(file)
-//  }
+  res.sendStatus(400);
+  if(req.params.version == 2 && req.params.deviceid == "CRPI_0001"){
+      const file = `${__dirname}\\firmware\\install.zip`;
+      console.log(file);
+      res.sendFile(file)
+  }
   
   //console.log(file);
   // res.sendFile(file,'')
