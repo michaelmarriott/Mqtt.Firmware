@@ -16,74 +16,75 @@ logger.addHandler(handler)
 logger.info('running')
 
 unzippath = ''
-firmwarepath =''
-sensorpath =''
 
 try:
   with open("config.json", "r") as jsonFiled:
     print(jsonFiled)
     config = json.load(jsonFiled)
     unzippath = config['unzippath']
-    firmwarepath = config['firmwarepath']
-    sensorpath = config['sensorpath']
 except:
   print("error loading frimware config",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try:
-  stream = os.popen('sudo systemctl stop sensor_reader.service')
+  stream = os.popen('sudo systemctl stop energy_reader.service')
   output = stream.read()
   output
 
-  logger.info('stop sensor_reader.service')
+  logger.info('stop energy_reader.service')
   # Source path 
   sourcepath = unzippath + "install/"
   source =  os.listdir(sourcepath) 
+    
+  # Destination path 
+  destination = "/home/pi/sensor/"
+  destination_firmware = "/home/pi/firmware/"
 
-  sensor_config_delta = ''
-  sensor_config = ''
+  energy_config_delta = ''
+  energy_config = ''
   logger.info(source)
 except:
-  print("error stop sensor_reader.service",sys.exc_info()[0])
+  print("error stop energy_reader.service",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try:
   for files in source:
     logger.info(files)
     if files == "firmware.py":
-      shutil.copy(sourcepath+""+files, firmwarepath)
+      shutil.copy(sourcepath+""+files, destination_firmware)
       
     if files.endswith(".py"):
       logger.info(sourcepath+""+files)
-      logger.info(sensorpath)
-      shutil.copy(sourcepath+""+files, sensorpath)
+      logger.info(destination)
+      shutil.copy(sourcepath+""+files, destination)
 except:
   print("error copy file",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
+
 try:
     # Source path 
-  config_sensor_delta = unzippath + "install/config.json"
+  config_energy_delta = unzippath + "install/config.json"
     
   # Destination path 
-  config_sensor_destination = sensorpath +"config.json"
+  config_energy_destination = "/home/pi/sensor/config.json"
 
   print("merge json files")
   logger.info('merge json files')
-  with open(config_sensor_delta, "r") as jsonFileDelta:
-    sensor_config_delta = json.load(jsonFileDelta)
-    print("load config_sensor_delta")
-    logger.info('load config_sensor_delta')
-  with open(config_sensor_destination, "r") as jsonFileDestination:
-    sensor_config = json.load(jsonFileDestination)
-    print("load config_sensor_destination")
-    logger.info('load config_sensor_destination')
+  with open(config_energy_delta, "r") as jsonFileDelta:
+    energy_config_delta = json.load(jsonFileDelta)
+    print("load config_energy_delta")
+    logger.info('load config_energy_delta')
+  with open(config_energy_destination, "r") as jsonFileDestination:
+    energy_config = json.load(jsonFileDestination)
+    print("load config_energy_destination")
+    logger.info('load config_energy_destination')
 
-  result = merge(sensor_config, sensor_config_delta)
+  result = merge(energy_config, energy_config_delta)
   print("merge")
   logger.info('merge')
 
-  with open(config_sensor_destination, "w+") as jsonFile:
+  with open(config_energy_destination, "w+") as jsonFile:
     jsonFile.write(json.dumps(result))
     jsonFile.close()
     print("save")
@@ -95,11 +96,11 @@ except:
 try:
   print("start service")
   logger.info('start service')
-  stream = os.popen('sudo systemctl start sensor_reader.service')
+  stream = os.popen('sudo systemctl start energy_reader.service')
   output = stream.read()
   output
 except:
-  print("error start sensor_reader.service",sys.exc_info()[0])
+  print("error start energy_reader.service",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try: 

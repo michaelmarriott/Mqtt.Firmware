@@ -39,7 +39,7 @@ app.get('/', function (req, res) {
 app.get('/firmware/:deviceid', authenticateJWT, async (req, res) => {
   console.log(`firmware` + req.params.deviceid);
   console.log(req.token);
-  database.getVersion(req.token.id)
+ // version = database.getVersion(req.token.id)
   res.send({ "version": 2 });
 });
 
@@ -48,19 +48,15 @@ app.get('/firmware/:deviceid/:version', authenticateJWT, async (req, res) => {
   console.log(req.params.deviceid);
   console.log(req.params.version);
   console.log(req.token);
-  res.sendStatus(400);
   if(req.params.version == 2 && req.params.deviceid == "CRPI_0001"){
       const file = `${__dirname}\\firmware\\install.zip`;
       console.log(file);
-      res.sendFile(file)
+      res.sendFile(file);
+      return
+  }else{
+    res.sendStatus(400);
   }
-  
-  //console.log(file);
-  // res.sendFile(file,'')
- // res.sendFile(file)
-  //res.download(file); // Set disposition and send it.
 });
-
 
 
 if (require.main === module) { app.listen(3004); }
