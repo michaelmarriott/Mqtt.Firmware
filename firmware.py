@@ -48,7 +48,7 @@ def download(url,username,version, save_path, token, chunk_size=1024):
     print(save_path)
     with open(save_path, 'wb') as fd:
       print("save_path")
-      for chunk in r.iter_content(chunk_size=chunk_size):
+      for chunk in dr.iter_content(chunk_size=chunk_size):
         fd.write(chunk)     
   except:
     print("error loading firmware config:download_url:",sys.exc_info()[0])

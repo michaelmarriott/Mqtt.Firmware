@@ -55,3 +55,10 @@ downloading
 <type 'exceptions.KeyboardInterrupt'>
 <traceback object at 0x0000000003E2DF48>
 downloading
+downloading
+<type 'exceptions.TypeError'>
+<traceback object at 0x000000000459AA88>
+downloading
+downloading
+<type 'exceptions.KeyboardInterrupt'>
+<traceback object at 0x0000000004597B08>
