@@ -31,7 +31,7 @@ try:
   output = stream.read()
   output
 
-  logger.info('stop energy_reader.service')
+  logger.info('stop sensor_reader.service')
   # Source path 
   sourcepath = unzippath + "install/"
   source =  os.listdir(sourcepath) 
@@ -44,7 +44,7 @@ try:
   energy_config = ''
   logger.info(source)
 except:
-  print("error stop energy_reader.service",sys.exc_info()[0])
+  print("error stop sensor_reader.service",sys.exc_info()[0])
   logger.error(sys.exc_info()[0])
 
 try:
@@ -77,8 +77,8 @@ try:
     logger.info('load config_energy_delta')
   with open(config_energy_destination, "r") as jsonFileDestination:
     energy_config = json.load(jsonFileDestination)
-    print("load config_energy_destination")
-    logger.info('load config_energy_destination')
+    print("load config_sensor_destination")
+    logger.info('load config_sensor_destination')
 
   result = merge(energy_config, energy_config_delta)
   print("merge")
