@@ -51,6 +51,7 @@ def download(url,username,version, save_path, token, chunk_size=1024):
       for chunk in dr.iter_content(chunk_size=chunk_size):
         fd.write(chunk)     
   except:
+<<<<<<< HEAD
     print("error loading firmware config:download_url:",sys.exc_info()[0])
     return False
   return True
@@ -64,6 +65,14 @@ def get_latest_version(url,username, current_version,token):
   r = requests.get(url_version, headers={'Authorization': url_token })
 
   print(r.text)
+=======
+    print("error loading firmware config",sys.exc_info()[0])
+
+
+def latest_version(url,current_version):
+  url_version = url+"?version="+str(current_version)
+  r = requests.get(url_version)
+>>>>>>> 4f461f08a547b29597d1c499b64f11bf15fa82cd
   json = r.json()
   if current_version != json["version"]:
     return json["version"]
